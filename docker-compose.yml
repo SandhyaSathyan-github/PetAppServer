@@ -1,0 +1,27 @@
+﻿version: '3.8'
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Sandhya123@!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    container_name: sqlserver
+    volumes:
+      - sqlserverdata:/var/opt/mssql    # Persist data here
+
+  petapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - sqlserver
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PetAdoptionDb;User=sa;Password=Sandhya123@!;
+    ports:
+      - "5116:80"
+    container_name: petapi
+
+volumes:
+  sqlserverdata:

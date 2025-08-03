@@ -1,0 +1,17 @@
+# Ignore Visual Studio folder
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# Docker stuff
+*.db
+docker-compose.override.yml
+
+# Others
+*.log
+.env
+
