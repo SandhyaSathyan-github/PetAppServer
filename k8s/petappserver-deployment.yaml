@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petappserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petappserver
+  template:
+    metadata:
+      labels:
+        app: petappserver
+    spec:
+      containers:
+        - name: petappserver
+          image: sandhya7777/petappserver:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server=sqlserver;Database=PetAdoptionDb;User=sa;Password=Sandhya123@!;"
