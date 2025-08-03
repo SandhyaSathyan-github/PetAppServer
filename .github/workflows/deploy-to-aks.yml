@@ -3,7 +3,7 @@ name: Build and Deploy to AKS
 on:
   push:
     branches:
-      - main  # or 'master' or any branch you want to trigger on
+      - main
 
 env:
   DOCKER_IMAGE: sandhya7777/petappserver
@@ -35,13 +35,14 @@ jobs:
         push: true
         tags: ${{ env.DOCKER_IMAGE }}:latest
 
-    - name: ☁️ Set up Azure CLI
-      uses: azure/cli@v2
+    - name: 🧩 Set up kubectl
+      uses: azure/setup-kubectl@v3
 
-    - name: 🔑 Azure AKS Login
+    - name: 🗝️ Restore kubeconfig from secret
       run: |
-        az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-        az aks get-credentials --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.AKS_CLUSTER }}
+        echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig
+        mkdir -p ~/.kube
+        mv kubeconfig ~/.kube/config
 
     - name: 🚀 Deploy to AKS
       run: |
