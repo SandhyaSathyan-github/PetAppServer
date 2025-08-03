@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: petappserver-service
 spec:
+  type: LoadBalancer
   selector:
     app: petappserver
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: ClusterIP
